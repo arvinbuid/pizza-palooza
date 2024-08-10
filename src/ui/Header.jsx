@@ -1,10 +1,10 @@
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import SearchOrder from "../features/order/SearchOrder";
 
 function Header() {
   return (
-    <header>
-      <Link to='/'>Pizza Palooza</Link>
+    <header className="bg-yellow-500">
+      <Link to="/">Pizza Palooza</Link>
       <SearchOrder />
       <p>Arvin</p>
     </header>
