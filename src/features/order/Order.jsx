@@ -59,11 +59,11 @@ function Order() {
 
       <div className="space-y-2 bg-stone-200 px-6 py-5">
         <p className="text-sm font-medium text-stone-800">
-          Price pizza: {formatCurrency(orderPrice)}
+          Pizza price: {formatCurrency(orderPrice)}
         </p>
         {priority && (
           <p className="text-sm font-medium text-stone-800">
-            Price priority: {formatCurrency(priorityPrice)}
+            Priority price: {formatCurrency(priorityPrice)}
           </p>
         )}
         <p className="text-md font-bold text-stone-800">
