@@ -43,7 +43,7 @@ function CreateOrder() {
   const formErrors = useActionData();
 
   return (
-    <div className="px-6 py-5">
+    <div className="px-6 py-10">
       <h2 className="mb-6 text-xl font-bold">Ready to order? Let&apos;s go!</h2>
 
       <Form method="POST">
