@@ -17,7 +17,14 @@ const isValidPhone = (str) =>
 
 function CreateOrder() {
   const [withPriority, setWithPriority] = useState(false);
-  const username = useSelector((state) => state.user.username);
+  const {
+    username,
+    status: addressStatus,
+    position,
+    address,
+  } = useSelector((state) => state.user);
+  const isLoadingAddress = addressStatus === 'loading';
+
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const isSubmitting = navigation.state === 'submitting';
@@ -33,8 +40,6 @@ function CreateOrder() {
   return (
     <div className="px-6 py-10">
       <h2 className="mb-6 text-xl font-bold">Ready to order? Let&apos;s go!</h2>
-
-      <button onClick={() => dispatch(fetchAddress())}>Get Position</button>
 
       <Form method="POST">
         <div className="mb-5 flex grow flex-col gap-2 sm:flex-row sm:items-center">
@@ -62,13 +67,31 @@ function CreateOrder() {
 
         <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-center">
           <label className="sm:basis-40">Address</label>
-          <div className="grow">
+          <div className="relative grow">
             <input
               type="text"
               name="address"
               className="input w-full"
+              disabled={isLoadingAddress}
+              defaultValue={address}
               required
             />
+
+            {!position.longitude && !position.latitude && (
+              <span className="z-100 absolute right-[1.5px]">
+                <Button
+                  type="primary"
+                  className="absolute"
+                  disabled={isLoadingAddress}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    dispatch(fetchAddress());
+                  }}
+                >
+                  Get Position
+                </Button>
+              </span>
+            )}
           </div>
         </div>
 
@@ -86,7 +109,7 @@ function CreateOrder() {
 
         <div>
           <input type="hidden" name="cart" value={JSON.stringify(cart)} />
-          <Button disabled={isSubmitting} type="primary">
+          <Button disabled={isSubmitting || isLoadingAddress} type="primary">
             {isSubmitting
               ? 'Placing Order...'
               : `Order now for ${formatCurrency(totalPrice)}`}
