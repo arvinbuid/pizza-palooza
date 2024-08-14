@@ -20,7 +20,7 @@ export const fetchAddress = createAsyncThunk(
 
     // 2) Use reverse geocoding API to get a description of the user's address, so it can be displayed on the order form, so that the user can correct it if wrong
     const addressObj = await getAddress(position);
-    const address = `${addressObj?.locality}, ${addressObj?.city} ${addressObj?.postcode}, ${addressObj?.countryName}`;
+    const address = `${addressObj?.city}, ${addressObj?.countryCode}`;
 
     // 3) Then we return an object with the data that we are interested in
     // Payload of the fullfilled state inside the extraReducers builder
@@ -55,8 +55,10 @@ const userSlice = createSlice({
         state.address = action.payload.address;
         state.status = 'idle';
       })
-      .addCase(fetchAddress.rejected, (state, action) => {
-        (state.status = 'error'), (state.error = action.error.message);
+      .addCase(fetchAddress.rejected, (state) => {
+        (state.status = 'error'),
+          (state.error =
+            'There was a problem getting your address. Make sure to input your address or allow access location from your browser.');
       });
   },
 });
